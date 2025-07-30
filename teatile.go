@@ -5,7 +5,6 @@ import (
 
 	"iter"
 
-	"github.com/charmbracelet/lipgloss"
 	"github.com/google/uuid"
 )
 
@@ -132,23 +131,6 @@ func (t *Tile) GetSize() (int, int) {
 	t.calcH = h
 
 	return w, h
-}
-
-// SetStyle sets the width and height of a style according to the tile.
-func (t *Tile) SetStyle(s lipgloss.Style) lipgloss.Style {
-	w, h := t.GetSize()
-	if w > 0 {
-		s = s.Width(w).MaxWidth(w)
-	}
-	if h > 0 {
-		s = s.Height(h).MaxHeight(h)
-	}
-	return s
-}
-
-// NewStyle creates a new style and calls SetStyle on it.
-func (t *Tile) NewStyle() lipgloss.Style {
-	return t.SetStyle(lipgloss.NewStyle())
 }
 
 // NewNamedSubtile creates a new subtile with a name that can be used to refer to it later.

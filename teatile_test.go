@@ -147,29 +147,6 @@ func TestSizeCalculations(t *testing.T) {
 	}
 }
 
-func TestStyles(t *testing.T) {
-	t.Parallel()
-
-	tile := New()
-	expectedW := 1
-	expectedH := 2
-	tile.WithSize(expectedW, expectedH)
-	s := tile.NewStyle()
-
-	require.NotNil(t, s)
-	assert.Equal(t, expectedW, s.GetWidth())
-	assert.Equal(t, expectedH, s.GetHeight())
-
-	expectedW = 3
-	expectedH = 4
-	tile.WithSize(expectedW, expectedH)
-	s = tile.SetStyle(s)
-
-	require.NotNil(t, s)
-	assert.Equal(t, expectedW, s.GetWidth())
-	assert.Equal(t, expectedH, s.GetHeight())
-}
-
 func TestRecalculate(t *testing.T) {
 	t.Parallel()
 
