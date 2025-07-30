@@ -15,23 +15,6 @@ func TestNew(t *testing.T) {
 	assert.NotNil(t, tile)
 }
 
-func TestSetAndGetSubtiles(t *testing.T) {
-	t.Parallel()
-
-	const name = "name"
-
-	tile := New()
-	sub1 := tile.NewSubtile()
-	sub2 := tile.NewNamedSubtile(name)
-
-	for _, sl := range tile.subtiles {
-		assert.Contains(t, []*Tile{sub1, sub2}, sl)
-		assert.Same(t, tile, sl.parent)
-	}
-	assert.Len(t, tile.subtiles, 2)
-	assert.Same(t, sub2, tile.GetSubtile(name))
-}
-
 func TestSetAndGetSize(t *testing.T) {
 	t.Parallel()
 
@@ -219,16 +202,16 @@ func TestRecalculate(t *testing.T) {
 func TestCalculations(t *testing.T) {
 	t.Parallel()
 
-	lyt := New().WithSize(120, 60)
-	sub1 := lyt.NewSubtile()
-	sub2 := lyt.NewNamedSubtile("sub2")
+	tile := New().WithSize(120, 60)
+	sub1 := tile.NewSubtile()
+	sub2 := tile.NewSubtile()
 	JoinHorizontal(sub1, sub2)
-	assert.Len(t, lyt.subtiles, 2)
+	assert.Len(t, tile.subtiles, 2)
 	assert.Same(t, sub2, sub1.right)
 	assert.Same(t, sub1, sub2.left)
 	var idx int
 	for l := range iterH(sub2) {
-		assert.Same(t, lyt, l.parent)
+		assert.Same(t, tile, l.parent)
 		switch idx {
 		case 0:
 			assert.Same(t, sub1, l)
@@ -248,14 +231,14 @@ func TestCalculations(t *testing.T) {
 	assert.Equal(t, 60, w, "sub2 w")
 	assert.Equal(t, 30, h, "sub2 h")
 
-	lyt.WithSize(300, 63).Recalculate()
+	tile.WithSize(300, 63).Recalculate()
 	assert.Empty(t, sub1.setWidth)
-	assert.Empty(t, lyt.GetSubtile("sub2").setWidth)
+	assert.Empty(t, sub2.setWidth)
 
 	w, h = sub1.GetSize()
 	assert.Equal(t, 150, w, "sub1 recalc w")
 	assert.Equal(t, 31, h, "sub1 recalc h")
-	w, h = lyt.GetSubtile("sub2").GetSize()
+	w, h = sub2.GetSize()
 	assert.Equal(t, 150, w, "sub2 recalc w")
 	assert.Equal(t, 32, h, "sub2 recalc h")
 }

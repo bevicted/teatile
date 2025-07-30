@@ -1,11 +1,7 @@
 package teatile
 
 import (
-	"fmt"
-
 	"iter"
-
-	"github.com/google/uuid"
 )
 
 type Tile struct {
@@ -19,15 +15,13 @@ type Tile struct {
 	right     *Tile
 	down      *Tile
 	left      *Tile
-	subtiles  map[string]*Tile
+	subtiles  []*Tile
 	recalcCBs []func()
 }
 
 // New creates a new Tile.
 func New() *Tile {
-	return &Tile{
-		subtiles: map[string]*Tile{},
-	}
+	return &Tile{}
 }
 
 // WithSize sets the width and height of the tile.
@@ -52,7 +46,7 @@ func (t *Tile) getSize() (int, int) {
 	return w, h
 }
 
-// GetSize returns the width and height of the tile and calculates them if necessary.
+// GetSize returns the width and height of the tile, calculating them if necessary.
 func (t *Tile) GetSize() (int, int) {
 	w, h := t.getSize()
 
@@ -133,27 +127,12 @@ func (t *Tile) GetSize() (int, int) {
 	return w, h
 }
 
-// NewNamedSubtile creates a new subtile with a name that can be used to refer to it later.
-func (t *Tile) NewNamedSubtile(name string) *Tile {
-	subtile := New()
-	t.subtiles[name] = subtile
-	subtile.parent = t
-	return subtile
-}
-
-// NewSubtile creates a new subtile with a random unique name, use this if there's no need
-// to refer to the tile later.
+// NewSubtile creates a new subtile.
 func (t *Tile) NewSubtile() *Tile {
-	return t.NewNamedSubtile(uuid.NewString())
-}
-
-// GetSubtile returns the subtile by name.
-func (t *Tile) GetSubtile(name string) *Tile {
-	sl, ok := t.subtiles[name]
-	if !ok {
-		panic(fmt.Sprintf("no such subtile: %q", name))
-	}
-	return sl
+	st := New()
+	t.subtiles = append(t.subtiles, st)
+	st.parent = t
+	return st
 }
 
 // OnRecalculate adds the specified callback function to the list of funcs that will be called
