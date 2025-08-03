@@ -1,5 +1,9 @@
 # TeaTile
 
+![Latest Release](https://img.shields.io/github/v/release/bevicted/teatile)
+[![GoDoc](https://pkg.go.dev/badge/github.com/bevicted/teatile.svg)](https://pkg.go.dev/github.com/bevicted/teatile)
+[![Build](https://github.com/bevicted/teatile/actions/workflows/go.yml/badge.svg)](https://github.com/bevicted/teatile/actions/workflows/go.yml)
+
 Tiling layout manager for
 [Bubble Tea](https://github.com/charmbracelet/bubbletea).
 
