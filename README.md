@@ -111,5 +111,17 @@ func (m *Model) Init() tea.Cmd {
 	return nil
 }
 
+func (m *Model) View() string {
+	// when rendering, get the size, you can rapidly call this as the size
+	// only needs to be calculated once
+	w, h := m.tiles.main.GetSize()
+	return lipgloss.NewStyle().
+		Width(w).
+		MaxWidth(w).
+		Height(h).
+		MaxHeight(h).
+		Render("my main tile")
+}
+
 ```
 
