@@ -11,8 +11,7 @@ import (
 func TestNew(t *testing.T) {
 	t.Parallel()
 
-	tile := New()
-	assert.NotNil(t, tile)
+	assert.NotNil(t, New(), "New should return a pointer to a Tile")
 }
 
 func TestSetAndGetSize(t *testing.T) {

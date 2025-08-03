@@ -1,9 +1,16 @@
+// Package teatile provides a simple layout management system for Bubble Tea
+// applications.
+//
+// It allows allocating and managing rectangular spaces (tiles) that can be nested and sized
+// automatically, which is useful for building complex TUI layouts with Bubble Tea.
 package teatile
 
 import (
 	"iter"
 )
 
+// Tile represents a rectangular space in the layout.
+// Subtiles will strive to fill their parent's space.
 type Tile struct {
 	setWidth  int
 	setHeight int
@@ -19,19 +26,21 @@ type Tile struct {
 	recalcCBs []func()
 }
 
-// New creates a new Tile.
+// New creates a new Tile and returns a pointer to it.
 func New() *Tile {
 	return &Tile{}
 }
 
-// WithSize sets the width and height of the tile.
+// WithSize sets the width and height for the Tile.
 func (t *Tile) WithSize(w, h int) *Tile {
 	t.setWidth = w
 	t.setHeight = h
 	return t
 }
 
-// getSize returns the width and height of the tile
+// getSize returns the width and height of the Tile.
+//
+// It first considers explicitly set sizes and if those are zero, returns the calculated sizes.
 func (t *Tile) getSize() (int, int) {
 	w := t.setWidth
 	if w == 0 {
@@ -46,7 +55,7 @@ func (t *Tile) getSize() (int, int) {
 	return w, h
 }
 
-// GetSize returns the width and height of the tile, calculating them if necessary.
+// GetSize returns the width and height of the Tile, calculating them if necessary.
 func (t *Tile) GetSize() (int, int) {
 	w, h := t.getSize()
 
@@ -201,7 +210,7 @@ func iterH(sibling *Tile) iter.Seq[*Tile] {
 // and goes over every tile that's joined to the bottom of the current one.
 //
 // NOTE: tile given as parameter is not the starting point, simply a link in
-// the horizontal chain.
+// the vertical chain.
 func iterV(sibling *Tile) iter.Seq[*Tile] {
 	tile := sibling
 	for tile.up != nil {
