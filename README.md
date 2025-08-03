@@ -1,6 +1,6 @@
 # TeaTile
 
-Automated tiling layout manager for
+Tiling layout manager for
 [Bubble Tea](https://github.com/charmbracelet/bubbletea).
 
 If you're using multiple `tea.Model`s you might've run into the annoying
