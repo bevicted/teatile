@@ -97,7 +97,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		// on window size change, set the size of the main Tile and tell it
 		// to recalculate the occupied area. This will propagate to all
-		// linked Tiles, be it horizontally/vertically joined or a subtile.
+		// linked Tiles, be it horizontally/vertically joined or subtiles.
 		m.tiles.main.WithSize(msg.Width, msg.Height).Recalculate()
 ...
 
