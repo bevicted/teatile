@@ -9,6 +9,28 @@ import (
 	"iter"
 )
 
+type style[S any] interface {
+	Width(int) S
+	MaxWidth(int) S
+	Height(int) S
+	MaxHeight(int) S
+}
+
+func SetStyleWidth[S style[S]](s S, t *Tile) S {
+	w, _ := t.GetSize()
+	return s.Width(w).MaxWidth(w)
+}
+
+func SetStyleHeight[S style[S]](s S, t *Tile) S {
+	_, h := t.GetSize()
+	return s.Height(h).MaxHeight(h)
+}
+
+func SetStyleSize[S style[S]](s S, t *Tile) S {
+	w, h := t.GetSize()
+	return s.Width(w).MaxWidth(w).Height(h).MaxHeight(h)
+}
+
 // Tile represents a rectangular space in the layout.
 // Subtiles will strive to fill their parent's space.
 type Tile struct {

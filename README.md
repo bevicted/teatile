@@ -18,10 +18,8 @@ height and recalculate it if necessary.
 
 ## Why TeaTile?
 
-TeaTile aims to be minimal and simplistic. It has no dependencies (besides
-testify), provides a single struct with a constructor and 7 methods.
-TeaTile also doesn't try to do anything fancy, it tries to fill a rectangular
-space, that's it.
+TeaTile aims to be minimal and simplistic it tries to fill a rectangular space,
+that's it.
 
 ## Usage
 
@@ -37,20 +35,47 @@ go get -u github.com/bevicted/teatile@latest
 
 // given that our main Tile has a height of 10 lines
 tile := teatile.New().WithSize(0, 10)
-subtile := tile.NewSubtile()
+
+headerTile := tile.NewSubtile().WithSize(0, 3)
+contentTile := tile.NewSubtile()
+footerTile := tile.NewSubtile()
 
 // we have 3 subtiles joined vertically
 teatile.JoinVertical(
 	// takes 3 lines of space
-	tile.NewSubtile().WithSize(0, 3),
+	headerTile,
 
 	// with no set height, these Tiles will fill the remaining space
 
 	// fills (10 - 3) / 2 = 3 lines
-	subtile,
+	contentTile,
 	// fills the remaining 10 - 3 - 3 = 4 lines
-	tile.NewSubtile(),
+	footerTile,
 )
+
+// when it's time to render our in our View() function:
+w, h := m.tiles.main.GetSize()
+headerView := lipgloss.NewStyle().
+	Width(w).
+	MaxWidth(w).
+	Height(h).
+	MaxHeight(h).
+	Render("header")
+// might get annoying to do this for every Tile, so let's use helpers
+contentView := teatile.SetStyleSize(lipgloss.NewStyle(), contentTile).
+	Render("content")
+footerView := teatile.SetStyleSize(lipgloss.NewStyle(), footerTile).
+	Render("footer")
+view := lipgloss.JoinVertical(
+	headerView,
+	contentView,
+	footerView,
+)
+
+// use sizes for other calculations
+// e.g.: move page down
+_, h := subtile.GetSize()
+CursorDown(h)
 ```
 
 ### Example
