@@ -32,7 +32,6 @@ go get -u github.com/bevicted/teatile@latest
 ### Basic
 
 ```go
-
 // given that our main Tile has a height of 10 lines
 tile := teatile.New().WithSize(0, 10)
 
@@ -53,7 +52,7 @@ teatile.JoinVertical(
 	footerTile,
 )
 
-// when it's time to render our in our View() function:
+// when it's time to render our View():
 w, h := m.tiles.main.GetSize()
 headerView := lipgloss.NewStyle().
 	Width(w).
