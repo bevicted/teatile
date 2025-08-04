@@ -8,6 +8,93 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+type testStyle struct {
+	widthF  func(int)
+	heightF func(int)
+}
+
+func (t testStyle) Width(i int) testStyle {
+	t.widthF(i)
+	return t
+}
+
+func (t testStyle) MaxWidth(i int) testStyle {
+	t.widthF(i)
+	return t
+}
+
+func (t testStyle) Height(i int) testStyle {
+	t.heightF(i)
+	return t
+}
+
+func (t testStyle) MaxHeight(i int) testStyle {
+	t.heightF(i)
+	return t
+}
+
+func TestSetStyleWidth(t *testing.T) {
+	t.Parallel()
+
+	var widthCalled bool
+	tile := &Tile{setWidth: 5, setHeight: 10}
+	s := testStyle{
+		widthF: func(i int) {
+			widthCalled = true
+			assert.Equal(t, tile.setWidth, i)
+		},
+		heightF: func(i int) {
+			assert.Fail(t, "should not have been called")
+		},
+	}
+
+	SetStyleWidth(s, tile)
+	assert.True(t, widthCalled, "width was not set")
+}
+
+func TestSetStyleHeight(t *testing.T) {
+	t.Parallel()
+
+	var heightCalled bool
+	tile := &Tile{setWidth: 5, setHeight: 10}
+	s := testStyle{
+		widthF: func(i int) {
+			assert.Fail(t, "should not have been called")
+		},
+		heightF: func(i int) {
+			heightCalled = true
+			assert.Equal(t, tile.setHeight, i)
+		},
+	}
+
+	SetStyleHeight(s, tile)
+	assert.True(t, heightCalled, "height was not set")
+}
+
+func TestSetStyleSize(t *testing.T) {
+	t.Parallel()
+
+	var (
+		widthCalled  bool
+		heightCalled bool
+	)
+	tile := &Tile{setWidth: 5, setHeight: 10}
+	s := testStyle{
+		widthF: func(i int) {
+			widthCalled = true
+			assert.Equal(t, tile.setWidth, i)
+		},
+		heightF: func(i int) {
+			heightCalled = true
+			assert.Equal(t, tile.setHeight, i)
+		},
+	}
+
+	SetStyleSize(s, tile)
+	assert.True(t, widthCalled, "width was not set")
+	assert.True(t, heightCalled, "height was not set")
+}
+
 func TestNew(t *testing.T) {
 	t.Parallel()
 
