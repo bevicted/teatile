@@ -16,16 +16,20 @@ type style[S any] interface {
 	MaxHeight(int) S
 }
 
+// SetStyleWidth sets the Width and MaxWidth of style to the width of Tile.
 func SetStyleWidth[S style[S]](s S, t *Tile) S {
 	w, _ := t.GetSize()
 	return s.Width(w).MaxWidth(w)
 }
 
+// SetStyleHeight sets the Height and MaxHeight of style to the height of Tile.
 func SetStyleHeight[S style[S]](s S, t *Tile) S {
 	_, h := t.GetSize()
 	return s.Height(h).MaxHeight(h)
 }
 
+// SetStyleSize sets the Width, MaxWidth, Height and MaxHeight of style to
+// the Tile's size.
 func SetStyleSize[S style[S]](s S, t *Tile) S {
 	w, h := t.GetSize()
 	return s.Width(w).MaxWidth(w).Height(h).MaxHeight(h)
